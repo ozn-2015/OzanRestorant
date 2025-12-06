@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımızda - Ozan Restorant</title>
+    <link rel="icon" type="image/png" href="restoran_logo.png">
+
+    <style>
+        /* GENEL STİL */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #121212; color: #fff; }
+        
+        /* NAVBAR */
+        nav {
+            background-color: #1f1f1f; padding: 15px 20px; display: flex;
+            justify-content: space-between; align-items: center; border-bottom: 1px solid #333;
+        }
+        .logo { color: #ff9800; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 15px; transition: 0.3s; }
+        .nav-links a:hover { color: #ff9800; }
+        
+        .active { color: #ff9800 !important; font-weight: bold; }
+
+        /* HİKAYE KUTULARI */
+        .container { max-width: 800px; margin: 50px auto; padding: 20px; }
+        
+        .page-title { 
+            color: #ff9800; font-size: 2.5rem; margin-bottom: 40px; 
+            text-align: center; border-bottom: 2px solid #ff9800; 
+            display: inline-block; padding-bottom: 10px;
+        }
+        .center-div { text-align: center; }
+
+        .story-card { 
+            background-color: #1f1f1f; padding: 30px; margin-bottom: 25px; 
+            border-radius: 10px; border-left: 5px solid #ff9800; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .year { font-size: 1.8rem; color: #ff9800; font-weight: bold; display: block; margin-bottom: 15px; }
+        p { line-height: 1.6; color: #ccc; font-size: 1.1rem; }
+
+        /* FOOTER */
+        footer { text-align: center; margin-top: 50px; padding: 20px; color: #555; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="ozan_restorant.html" class="logo">OZAN RESTORANT</a>
+        
+        <div class="nav-links">
+            <a href="ozan_restorant.html">Ana Sayfa</a>
+            <a href="hakkimizda.html" class="active">Hakkımızda</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="center-div">
+            <h1 class="page-title">BİZİM HİKAYEMİZ</h1>
+        </div>
+
+        <div class="story-card">
+            <span class="year">1995 - BAŞLANGIÇ</span>
+            <p>Ozan Restorant, İstanbul'un arka sokaklarında küçük ve samimi bir aile işletmesi olarak lezzet yolculuğuna başladı. O zamanlar sadece 4 masamız vardı ama samimiyetimiz ve lezzetimiz tüm mahalleye yayılmıştı. Amacımız hep "anne eli değmiş" sıcaklığını korumaktı.</p>
+        </div>
+
+        <div class="story-card">
+            <span class="year">2005 - İNTERNETE GEÇİŞ</span>
+            <p>Teknolojinin gelişmesiyle cesur bir adım attık. O yıllarda kimse yapmazken biz internetten sipariş almaya başladık. "Ozan Restorant Online" projesiyle lezzetimizi sadece mahalleye değil, tüm şehre paket servis ile ulaştırdık.</p>
+        </div>
+
+        <div class="story-card">
+            <span class="year">2015 - MERKEZLEŞME</span>
+            <p>Çok büyüdük, 10 farklı bayimiz oldu. Ancak fabrikasyon üretimden kaçınmak ve kaliteyi düşürmemek için radikal bir karar aldık: Tüm bayileri kapattık. Enerjimizi ve ustalığımızı tek bir merkezde topladık. Şu an bulunduğumuz bu mekanda, butik ve özel hizmet vermeye devam ediyoruz.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2025 Ozan Restorant - Gururla Sunar.</p>
+    </footer>
+
+</body>
+</html>

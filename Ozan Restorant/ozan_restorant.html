@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ozan Restorant - Sipariş</title>
+    <link rel="icon" type="image/png" href="restoran_logo.png">
+    <link rel="apple-touch-icon" href="restoran_logo.png"> 
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- STİLLER --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #121212; color: #fff; scroll-behavior: smooth; }
+
+        nav {
+            background-color: #1f1f1f; padding: 15px 20px; display: flex;
+            justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .logo { color: #ff9800; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; transition: 0.3s; }
+        .nav-links a:hover { color: #ff9800; }
+        
+        .cart-btn {
+            background-color: #ff9800; color: white; padding: 8px 15px; border-radius: 20px;
+            margin-left: 20px; cursor: pointer; position: relative; display: flex; align-items: center; gap: 5px;
+        }
+        .cart-count {
+            background-color: red; color: white; border-radius: 50%; padding: 2px 6px;
+            font-size: 0.8rem; position: absolute; top: -5px; right: -5px;
+        }
+
+        /* MENÜ BÖLÜMÜ */
+        .menu-section { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 30px; color: #ff9800; font-size: 2rem; border-bottom: 2px solid #333; display: inline-block; padding-bottom: 10px; }
+        
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        
+        .menu-item { background-color: #1f1f1f; border-radius: 10px; overflow: hidden; transition: transform 0.3s; }
+        .menu-item:hover { transform: translateY(-5px); }
+        .menu-item img { width: 100%; height: 200px; object-fit: cover; }
+        
+        .item-content { padding: 15px; }
+        .item-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; font-size: 1.1rem; }
+        .price { color: #ff9800; }
+        .desc { color: #aaa; font-size: 0.9rem; margin-bottom: 15px; height: 40px; }
+        
+        .add-btn {
+            background-color: #333; color: white; width: 100%; padding: 10px; border: none;
+            border-radius: 5px; cursor: pointer; transition: 0.3s; font-weight: bold;
+        }
+        .add-btn:hover { background-color: #ff9800; color: black; }
+
+        /* MODAL SİSTEMİ */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        
+        .modal-box {
+            background-color: #1f1f1f; width: 90%; max-width: 500px; padding: 25px;
+            border-radius: 10px; position: relative; box-shadow: 0 0 20px rgba(255, 152, 0, 0.2);
+            max-height: 90vh; overflow-y: auto;
+        }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .close-btn { background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; }
+        
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .total-price { text-align: right; font-size: 1.2rem; font-weight: bold; color: #ff9800; margin-top: 15px; }
+
+        /* Ödeme Formu */
+        .checkout-form label { display: block; margin-bottom: 5px; color: #ccc; }
+        .checkout-form input, .checkout-form textarea {
+            width: 100%; padding: 10px; margin-bottom: 15px; background-color: #2a2a2a;
+            border: 1px solid #444; color: white; border-radius: 5px;
+        }
+        .form-row { display: flex; gap: 10px; }
+        
+        .action-btn {
+            width: 100%; padding: 12px; background-color: #ff9800; color: white; border: none;
+            border-radius: 5px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+        .back-btn { background-color: #444; margin-top: 10px; }
+
+        footer { text-align: center; padding: 20px; color: #555; margin-top: 50px; border-top: 1px solid #222; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="ozan_restorant.html" class="logo">OZAN RESTORANT</a>
+        <div class="nav-links">
+            <a href="hakkimizda.html">Hakkımızda</a>
+            <div class="cart-btn" onclick="sepetiAc()">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Sepet</span>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="menu-section">
+        <div style="text-align: center;">
+            <h2 class="section-title">Lezzet Menüsü</h2>
+        </div>
+        
+        <div class="menu-grid">
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500" alt="Kebap">
+                <div class="item-content">
+                    <div class="item-header"><span>Ozan Spesiyal Kebap</span><span class="price">350 ₺</span></div>
+                    <p class="desc">Köz patlıcan yatağında kuzu şiş.</p>
+                    <button class="add-btn" onclick="sepeteEkle('Ozan Spesiyal Kebap', 350)">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500" alt="Pizza">
+                <div class="item-content">
+                    <div class="item-header"><span>İtalyan Pizza</span><span class="price">280 ₺</span></div>
+                    <p class="desc">İnce hamur, mozzarella ve fesleğen.</p>
+                    <button class="add-btn" onclick="sepeteEkle('İtalyan Pizza', 280)">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500" alt="Burger">
+                <div class="item-content">
+                    <div class="item-header"><span>Gurme Burger</span><span class="price">240 ₺</span></div>
+                    <p class="desc">180gr dana eti, cheddar, karamelize soğan.</p>
+                    <button class="add-btn" onclick="sepeteEkle('Gurme Burger', 240)">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500" alt="Lahmacun">
+                <div class="item-content">
+                    <div class="item-header"><span>Taş Fırın Lahmacun</span><span class="price">120 ₺</span></div>
+                    <p class="desc">Acılı/Acısız, yanında bol yeşillik.</p>
+                    <button class="add-btn" onclick="sepeteEkle('Lahmacun', 120)">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1606924846419-bf55b3d7d7d5?w=500" alt="Baklava">
+                <div class="item-content">
+                    <div class="item-header"><span>Fıstıklı Baklava</span><span class="price">150 ₺</span></div>
+                    <p class="desc">Gaziantep fıstığı ile günlük üretim.</p>
+                    <button class="add-btn" onclick="sepeteEkle('Fıstıklı Baklava', 150)">Sepete Ekle</button>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1625120668045-8f2441c2c27b?w=500" alt="Ayran">
+                <div class="item-content">
+                    <div class="item-header"><span>Yayık Ayranı</span><span class="price">40 ₺</span></div>
+                    <p class="desc">Ev yapımı, bol köpüklü.</p>
+                    <button class="add-btn" onclick="sepeteEkle('Yayık Ayranı', 40)">Sepete Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="cart-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Sepetim</h3>
+                <button class="close-btn" onclick="sepetiKapat()">&times;</button>
+            </div>
+            <div id="cart-items-container" class="cart-items">
+                <p style="text-align:center; color:#777;">Sepetiniz henüz boş.</p>
+            </div>
+            <div class="total-price" id="cart-total">Toplam: 0 ₺</div>
+            <button class="action-btn" onclick="odemeyeGec()">Ödemeye Geç</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Ödeme Bilgileri</h3>
+                <button class="close-btn" onclick="odemeyiKapat()">&times;</button>
+            </div>
+            
+            <div class="checkout-form">
+                <label>Ad Soyad</label>
+                <input type="text" placeholder="Örn: Ozan Karacabay">
+                
+                <label>Teslimat Adresi</label>
+                <textarea rows="3" placeholder="Mahalle, Cadde, No..."></textarea>
+                
+                <label>Kart Numarası</label>
+                <input type="text" placeholder="0000 0000 0000 0000">
+                
+                <div class="form-row">
+                    <div>
+                        <label>SKT</label>
+                        <input type="text" placeholder="AA/YY">
+                    </div>
+                    <div>
+                        <label>CVC</label>
+                        <input type="text" placeholder="123">
+                    </div>
+                </div>
+
+                <div style="background-color: #333; padding:10px; border-radius:5px; margin-bottom:15px; text-align:center;">
+                    <span style="color:#aaa;">Ödenecek Tutar:</span> <span id="checkout-total" style="color:#ff9800; font-weight:bold;">0 ₺</span>
+                </div>
+
+                <button class="action-btn" onclick="siparisiTamamla()">Siparişi Onayla</button>
+                <button class="action-btn back-btn" onclick="sepetiAc()">Sepete Dön</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Ozan Restorant - Afiyet Olsun!</p>
+    </footer>
+
+    <script>
+        let sepet = [];
+        let toplamTutar = 0;
+
+        function sepeteEkle(isim, fiyat) {
+            sepet.push({ isim: isim, fiyat: fiyat });
+            toplamTutar += fiyat;
+            sepetiGuncelle();
+            alert(isim + " sepete eklendi!");
+        }
+
+        function sepetiGuncelle() {
+            document.getElementById('cart-count').innerText = sepet.length;
+            
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = ""; 
+
+            if (sepet.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#777;">Sepetiniz henüz boş.</p>';
+            } else {
+                sepet.forEach(urun => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'cart-item';
+                    itemDiv.innerHTML = `<span>${urun.isim}</span> <span>${urun.fiyat} ₺</span>`;
+                    container.appendChild(itemDiv);
+                });
+            }
+
+            document.getElementById('cart-total').innerText = "Toplam: " + toplamTutar + " ₺";
+            document.getElementById('checkout-total').innerText = toplamTutar + " ₺";
+        }
+
+        function sepetiAc() {
+            document.getElementById('cart-modal').style.display = 'flex';
+            document.getElementById('checkout-modal').style.display = 'none';
+            sepetiGuncelle();
+        }
+
+        function sepetiKapat() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+
+        function odemeyeGec() {
+            if (sepet.length === 0) {
+                alert("Sepetiniz boş! Önce yemek seçmelisiniz.");
+                return;
+            }
+            document.getElementById('cart-modal').style.display = 'none';
+            document.getElementById('checkout-modal').style.display = 'flex';
+        }
+
+        function odemeyiKapat() {
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+
+        function siparisiTamamla() {
+            alert("✅ SİPARİŞİNİZ ALINDI!\n\nLezzetli yemekleriniz hazırlanıyor. Ozan Restorant'ı tercih ettiğiniz için teşekkürler.");
+            
+            sepet = [];
+            toplamTutar = 0;
+            sepetiGuncelle();
+            odemeyiKapat();
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('cart-modal')) {
+                sepetiKapat();
+            }
+            if (event.target == document.getElementById('checkout-modal')) {
+                odemeyiKapat();
+            }
+        }
+    </script>
+
+</body>
+</html>
